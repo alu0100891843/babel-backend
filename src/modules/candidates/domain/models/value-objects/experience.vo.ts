@@ -1,4 +1,4 @@
-import { IsInt, Min, Max, IsNotEmpty } from 'class-validator';
+import { IsInt, IsNotEmpty, Max, Min } from 'class-validator';
 import { VO } from './parent/vo.parent';
 
 export class ExperienceVO extends VO<number> {
@@ -6,11 +6,9 @@ export class ExperienceVO extends VO<number> {
   @Min(0, { message: 'Experience must be at least 0 years' })
   @Max(100, { message: 'Experience must be at most 100 years' })
   @IsNotEmpty({ message: 'Experience is required' })
-  protected readonly _value: number;
+  protected declare readonly _value: number;
 
   constructor(value: number) {
     super(value);
-    this._value = value;
-    this.validate();
   }
 }

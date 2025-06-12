@@ -1,14 +1,17 @@
+import { HttpException, HttpStatus } from "@nestjs/common";
 import { validateSync } from "class-validator";
 
 export abstract class VO<T> {
-  protected constructor(protected readonly _value: T) {
+  protected _value: T;
+  protected constructor(_value: T) {
+    this._value = _value;
     this.validate();
   }
 
   public validate() {
     const errors = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(errors[0].constraints?.[Object.keys(errors[0].constraints)[0]] || 'Validation failed');
+      throw new HttpException(`${this.constructor.name} Validation failed`, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 

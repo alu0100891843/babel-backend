@@ -5,11 +5,11 @@ import { SeniorityVO } from "../value-objects/seniority.vo";
 import { SurNameVO } from "../value-objects/surname.vo";
 
 export class CandidatesEntity {
-  name: NameVO;
-  surname: SurNameVO;
-  seniority: SeniorityVO;
-  experience: ExperienceVO;
-  availability: AvailabilityVO;
+  readonly name: NameVO;
+  readonly surname: SurNameVO;
+  readonly seniority: SeniorityVO;
+  readonly experience: ExperienceVO;
+  readonly availability: AvailabilityVO;
 
   private constructor(
     name: NameVO,

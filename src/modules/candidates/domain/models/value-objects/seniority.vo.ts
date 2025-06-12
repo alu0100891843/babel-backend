@@ -1,17 +1,15 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
-import { SeniorityEnum } from '../entities/enums/seniority.types';
+import { IsIn, IsNotEmpty } from 'class-validator';
 import { VO } from './parent/vo.parent';
+import { SeniorityEnum, SeniorityEnumType } from '../entities/enums/seniority.types';
 
-export class SeniorityVO extends VO<SeniorityEnum> {
-  @IsEnum(SeniorityEnum, {
+export class SeniorityVO extends VO<SeniorityEnumType> {
+  @IsIn(Object.values(SeniorityEnum), {
     message: 'Seniority must be a valid seniority level'
   })
   @IsNotEmpty({ message: 'Seniority is required' })
-  protected readonly _value: SeniorityEnum;
+  protected declare readonly _value: SeniorityEnumType;
 
-  constructor(value: SeniorityEnum) {
+  constructor(value: SeniorityEnumType) {
     super(value);
-    this._value = value;
-    this.validate();
   }
 }

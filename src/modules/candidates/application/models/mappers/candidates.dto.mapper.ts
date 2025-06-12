@@ -1,4 +1,4 @@
-import { SeniorityEnum } from "src/modules/candidates/domain/models/entities/enums/seniority.types";
+import { SeniorityEnum, SeniorityEnumType } from "src/modules/candidates/domain/models/entities/enums/seniority.types";
 import { CandidatesEntity } from "../../../domain/models/entities/candidates.entity";
 import { AvailabilityVO } from "../../../domain/models/value-objects/availability.vo";
 import { ExperienceVO } from "../../../domain/models/value-objects/experience.vo";
@@ -22,7 +22,7 @@ export class CandidatesDTOMapper {
   static dtoToEntity(dto: CandidatesDTO): CandidatesEntity {
     const name = new NameVO(dto.name);
     const surname = new SurNameVO(dto.surname);
-    const seniority = new SeniorityVO(SeniorityEnum[dto.seniority as keyof typeof SeniorityEnum])
+    const seniority = new SeniorityVO(SeniorityEnum[dto.seniority as SeniorityEnumType])
     const experience = new ExperienceVO(dto.experience);
     const availability = new AvailabilityVO(dto.availability);
 
