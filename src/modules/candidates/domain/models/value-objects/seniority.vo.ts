@@ -4,9 +4,9 @@ import { SeniorityEnum, SeniorityEnumType } from '../entities/enums/seniority.ty
 
 export class SeniorityVO extends VO<SeniorityEnumType> {
   @IsIn(Object.values(SeniorityEnum), {
-    message: 'Seniority must be a valid seniority level'
+    message: 'El nivel debe ser válido (junior o senior)'
   })
-  @IsNotEmpty({ message: 'Seniority is required' })
+  @IsNotEmpty({ message: 'El nivel es requerido' })
   protected declare readonly _value: SeniorityEnumType;
 
   constructor(value: SeniorityEnumType) {

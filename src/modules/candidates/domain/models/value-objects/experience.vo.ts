@@ -2,10 +2,10 @@ import { IsInt, IsNotEmpty, Max, Min } from 'class-validator';
 import { VO } from './parent/vo.parent';
 
 export class ExperienceVO extends VO<number> {
-  @IsInt({ message: 'Experience must be a whole number' })
-  @Min(0, { message: 'Experience must be at least 0 years' })
-  @Max(100, { message: 'Experience must be at most 100 years' })
-  @IsNotEmpty({ message: 'Experience is required' })
+  @IsInt({ message: 'La experiencia debe ser un número entero' })
+  @Min(0, { message: 'La experiencia debe ser de al menos 0 años' })
+  @Max(100, { message: 'La experiencia debe ser de máximo 100 años' })
+  @IsNotEmpty({ message: 'La experiencia es requerida' })
   protected declare readonly _value: number;
 
   constructor(value: number) {

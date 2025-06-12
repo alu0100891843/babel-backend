@@ -17,7 +17,10 @@ export class CandidatesService {
   private validateCandidateData(candidateDTO: CandidatesDTO, name: string, surname: string): CandidatesEntity {
     const candidateEntity = CandidatesDTOMapper.dtoToEntity(candidateDTO);
     if (candidateEntity.name.value !== name || candidateEntity.surname.value !== surname) {
-      throw new HttpException('Name and surname from excel file do not match the provided values', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'El nombre y apellido del archivo Excel no coinciden con los valores proporcionados',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return candidateEntity;
   }

@@ -11,7 +11,14 @@ export abstract class VO<T> {
   public validate() {
     const errors = validateSync(this);
     if (errors.length > 0) {
-      throw new HttpException(`${this.constructor.name} Validation failed`, HttpStatus.UNPROCESSABLE_ENTITY);
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints || {}).join(", "))
+        .join("; ");
+
+      throw new HttpException(
+        errorMessages || "Error de validación",
+        HttpStatus.UNPROCESSABLE_ENTITY
+      );
     }
   }
 
