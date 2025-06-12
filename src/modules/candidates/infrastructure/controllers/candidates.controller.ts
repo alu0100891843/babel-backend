@@ -1,9 +1,13 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as XLSX from 'xlsx';
+import { CandidatesDTO } from '../../application/models/dtos/candidates.dto';
+import { CandidatesService } from '../../application/services/candidates.service';
+import { ExcelAdapter } from '../adapters/excel.adapter';
 
 @Controller('candidates')
 export class CandidatesController {
+  constructor(private readonly candidatesService: CandidatesService) { }
+
   @Post('createCandidate')
   @UseInterceptors(FileInterceptor('excelFile', {
     fileFilter: (_, file, cb) => {
@@ -15,13 +19,20 @@ export class CandidatesController {
     limits: { fileSize: 1024 * 1024 * 1 }
   }))
 
-  createCandidate(@UploadedFile() excelFile: Buffer, @Body() body: { name: string, surname: string }) {
-    const workbook = XLSX.read(excelFile.buffer, { type: 'buffer' });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = XLSX.utils.sheet_to_json(worksheet);
+  createCandidate(@UploadedFile() excelFile: Buffer, @Body() body: { name: string, surname: string }): CandidatesDTO {
+    if (!excelFile) {
+      throw new HttpException('Excel file is required.', HttpStatus.BAD_REQUEST);
+    }
+    if (!body.name || !body.surname) {
+      throw new HttpException('Name and surname are required.', HttpStatus.BAD_REQUEST);
+    }
 
-    console.log('Parsed data from Excel file:', data);
-    console.log('Received file:', excelFile);
-    console.log('Received body:', body);
+    const excelData = ExcelAdapter.getJSONDataFromExcelFile(excelFile);
+    if (excelData.length !== 1) {
+      throw new HttpException('The Excel file should have only one row.', HttpStatus.BAD_REQUEST);
+    }
+
+    const candidateDTO = CandidatesDTO.createFromJson(excelData[0] as Omit<CandidatesDTO, never>);
+    return this.candidatesService.createCandidate(candidateDTO, body.name, body.surname);
   }
 }
