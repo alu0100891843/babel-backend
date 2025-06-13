@@ -1,0 +1,1 @@
+// Definition of the Candidates Schema according to DataBase

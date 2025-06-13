@@ -1,0 +1,1 @@
+// Definition of mapper for Candidates Schema to Entity 

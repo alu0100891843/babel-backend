@@ -11,15 +11,15 @@ export class CandidatesController {
   @Post('createCandidate')
   @UseInterceptors(FileInterceptor('excelFile', {
     fileFilter: (_, file, cb) => {
-      if (!file.originalname.match(/\.(xlsx)$/)) {
-        return cb(new Error('¡Solo se permiten archivos Excel XLSX!'), false);
+      if (!file.originalname.match(/\.(xls|xlsx)$/)) {
+        return cb(new Error('¡Solo se permiten archivos Excel XLS o XLSX!'), false);
       }
       cb(null, true);
     },
     limits: { fileSize: 1024 * 1024 * 1 }
   }))
 
-  createCandidate(@UploadedFile() excelFile: Buffer, @Body() body: { name: string, surname: string }): CandidatesDTO {
+  async createCandidate(@UploadedFile() excelFile: Buffer, @Body() body: { name: string, surname: string }): Promise<CandidatesDTO> {
     if (!excelFile) {
       throw new HttpException('El archivo Excel es requerido.', HttpStatus.BAD_REQUEST);
     }
@@ -34,6 +34,6 @@ export class CandidatesController {
     }
 
     const candidateDTO = CandidatesDTO.createFromJson(excelData[0] as Omit<CandidatesDTO, never>);
-    return this.candidatesService.createCandidate(candidateDTO, body.name, body.surname);
+    return await this.candidatesService.createCandidate(candidateDTO, body.name, body.surname);
   }
 }
