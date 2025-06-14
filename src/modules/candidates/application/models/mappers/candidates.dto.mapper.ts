@@ -1,4 +1,4 @@
-import { SeniorityEnum, SeniorityEnumType } from "src/modules/candidates/domain/models/entities/enums/seniority.types";
+import { SeniorityEnum, SeniorityEnumType } from "../../../domain/models/entities/enums/seniority.types";
 import { CandidatesEntity } from "../../../domain/models/entities/candidates.entity";
 import { AvailabilityVO } from "../../../domain/models/value-objects/availability.vo";
 import { ExperienceVO } from "../../../domain/models/value-objects/experience.vo";
